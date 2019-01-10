@@ -1,6 +1,6 @@
 # MyBatisStudy
 batis学习, 教程网站：http://how2j.cn/
-基本原理
+  基本原理
 1. 应用程序找Mybatis要数据
 2. mybatis从数据库中找来数据
 2.1 通过mybatis-config.xml 定位哪个数据库
