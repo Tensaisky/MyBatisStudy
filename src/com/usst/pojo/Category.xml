@@ -4,7 +4,32 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.usst.pojo">
+    <!--增-->
+    <insert id="addCategory" parameterType="Category">
+        INSERT INTO category_ ( name ) VALUES (#{name})
+    </insert>
+    <!--删-->
+    <delete id="deleteCategory" parameterType="Category">
+        delete FROM category_ WHERE id=#{id}
+    </delete>
+    <!--更-->
+    <update id="updateCategory" parameterType="Category">
+        UPDATE category_ set name=#{name} WHERE id=#{id}
+    </update>
+    <!--查-->
+    <select id="getCategory" parameterType="_int" resultType="Category">
+        SELECT * FROM category_ WHERE id=#{id}
+    </select>
+    <!--查询所有-->
     <select id="listCategory" resultType="Category">
         select * from   category_
+    </select>
+    <!--模糊查询-->
+    <select id="listCategoryByName" parameterType="string" resultType="Category">
+        SELECT * FROM category_ WHERE name LIKE concat('%',#{0},'%')
+    </select>
+    <!--多条件查询-->
+    <select id="listCategoryByIdAndName" parameterType="map" resultType="Category">
+        SELECT * FROM category_ WHERE id>#{id} AND name LIKE concat('%',#{name},'%')
     </select>
 </mapper>

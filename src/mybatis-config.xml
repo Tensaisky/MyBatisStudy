@@ -22,5 +22,6 @@
     <!--映射Category.xml-->
     <mappers>
         <mapper resource="com/usst/pojo/Category.xml"/>
+        <mapper resource="com/usst/pojo/Product.xml"/>
     </mappers>
 </configuration>

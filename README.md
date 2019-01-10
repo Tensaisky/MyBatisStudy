@@ -9,4 +9,4 @@ batis学习, 教程网站：http://how2j.cn/
 2.4 把多个Category对象装在一个Category集合中
 3. 返回一个Category集合
 ###
-![avatar](https://github.com/Tensaisky/MyBatisStudy/blob/master/src/fundamental.png)
+![avatar](https://github.com/Tensaisky/MyBatisStudy/blob/master/src/base.png)
