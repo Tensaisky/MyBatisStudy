@@ -4,7 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.usst.pojo">
+    <!--增-->
+    <insert id="addProduct" parameterType="Product">
+        INSERT INTO product_ ( name,price,cid ) VALUES (#{name},#{price},#{cid})
+    </insert>
+    <!--删-->
+    <delete id="deleteProduct" parameterType="Product">
+        delete FROM product_ WHERE id=#{id}
+    </delete>
+    <!--更-->
+    <update id="updateProduct" parameterType="Product">
+        UPDATE product_ set name=#{name},price=#{price},cid=#{cid} WHERE id=#{id}
+    </update>
+    <!--查-->
+    <select id="getProduct" parameterType="_int" resultType="Product">
+        SELECT * FROM product_ WHERE id=#{id}
+    </select>
     <select id="listProduct" resultType="Product">
         select * from   product_
+    </select>
+
+    <resultMap id="productBean" type="Product">
+        <id column="pid" property="id"/>
+        <result column="pname" property="name"/>
+        <result column="price" property="price"/>
+        <!--多对一的关系-->
+        <!--property:指的是属性名称,javaType:指的是属性的类型-->
+        <association property="category" javaType="Category">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+        </association>
+    </resultMap>
+    <!--根据id查询Product-->
+    <select id="listProductMap" resultMap="productBean">
+        SELECT c.*,p.*,c.id 'cid',p.id 'pid',c.name 'cname',p.name 'pname' FROM
+        category_ c LEFT JOIN product_ p ON c.id = p.cid
     </select>
 </mapper>

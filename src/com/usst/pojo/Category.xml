@@ -32,4 +32,21 @@
     <select id="listCategoryByIdAndName" parameterType="map" resultType="Category">
         SELECT * FROM category_ WHERE id>#{id} AND name LIKE concat('%',#{name},'%')
     </select>
+
+    <resultMap id="categoryBean" type="Category">
+        <id column="cid" property="id"/>
+        <result column="cname" property="name"/>
+        <!--一对多的关系-->
+        <!--property:集合属性的值，ofType：集合中元素的类型-->
+        <collection property="products" ofType="Product">
+            <id column="pid" property="id"/>
+            <result column="pname" property="name"/>
+            <result column="price" property="price"/>
+        </collection>
+    </resultMap>
+    <!--关联查询分类和产品表-->
+    <select id="listCategoryMap" resultMap="categoryBean">
+        SELECT c.*, p.*,c.id 'cid', p.id 'pid',c.name 'cname',p.name 'pname' FROM category_ c
+        LEFT JOIN product_ p ON c.id = p.cid
+    </select>
 </mapper>
