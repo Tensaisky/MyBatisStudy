@@ -23,5 +23,10 @@
     <mappers>
         <mapper resource="com/usst/pojo/Category.xml"/>
         <mapper resource="com/usst/pojo/Product.xml"/>
+        <mapper resource="com/usst/pojo/order.xml"/>
+        <mapper resource="com/usst/pojo/OrderItem.xml"/>
+
+        <mapper class="com.usst.mapper.CategoryMapper"/>
+        <mapper class="com.usst.mapper.ProductMapper"/>
     </mappers>
 </configuration>

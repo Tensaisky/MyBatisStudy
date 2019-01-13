@@ -20,8 +20,77 @@
     <select id="getProduct" parameterType="_int" resultType="Product">
         SELECT * FROM product_ WHERE id=#{id}
     </select>
-    <select id="listProduct" resultType="Product">
-        select * from   product_
+    <select id="listProductByName" resultType="Product">
+        SELECT * FROM product_ WHERE name LIKE concat('%',#{name},'%')
+    </select>
+    <select id="listProductAll" resultType="Product">
+        SELECT * FROM product_
+    </select>
+
+    <!--动态标签-->
+    <select id="listProductByIf" resultType="Product">
+        select * from   product_ WHERE 1=1
+        <if test="name!=null">
+            AND NAME LIKE concat('%',#{name},'%')
+        </if>
+        <if test="pricel!=0">
+            AND price > #{price}
+        </if>
+    </select>
+    <!--where标签会进行自动判断-->
+    <!--如果任何条件都不成立，那么就在sql语句里就不会出现where关键字-->
+    <!--如果有任何条件成立，会自动去掉多出来的 and 或者 or。-->
+    <select id="listProductByWhere" resultType="Product">
+        SELECT * FROM product_
+        <where>
+            <if test="name!=null">
+                AND NAME LIKE concat('%',#{name},'%')
+            </if>
+            <if test="pricel!=0">
+                AND price > #{price}
+            </if>
+        </where>
+    </select>
+    <!--set标签-->
+    <select id="updateProductBySet" parameterType="Product">
+        UPDATE product_
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="price != null">price=#{price}</if>
+        </set>
+        WHERE id=#{id}
+    </select>
+    <!--when otherwise提供了任何条件，就进行条件查询(按配置顺序，只会选择一个条件)
+    ，否则就使用id>1这个条件-->
+    <select id="listProductByChoose" resultType="Product">
+        SELECT * FROM product_
+        <where>
+            <choose>
+                <when test="name != null">
+                    and name like concat('%',#{name},'%')
+                </when>
+                <when test="price !=null and price != 0">
+                    and price > #{price}
+                </when>
+                <otherwise>
+                    and id >1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="listProductByForeach" resultType="Product">
+        SELECT * FROM product_
+          WHERE id IN
+            <foreach collection="list" item="item" index="index"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+    <!--bind标签就像是再做一次字符串拼接，方便后续使用-->
+    <select id="listProductByBind" resultType="Product">
+        <bind name="likename" value="'%' + name + '%'"/>
+        SELECT * FROM product_ WHERE NAME LIKE #{likename}
     </select>
 
     <resultMap id="productBean" type="Product">
@@ -39,5 +108,9 @@
     <select id="listProductMap" resultMap="productBean">
         SELECT c.*,p.*,c.id 'cid',p.id 'pid',c.name 'cname',p.name 'pname' FROM
         category_ c LEFT JOIN product_ p ON c.id = p.cid
+    </select>
+    <select id="getProductMap" resultMap="productBean">
+        SELECT c.*,p.*,c.id 'cid',p.id 'pid',c.name 'cname',p.name 'pname'
+        FROM category_ c LEFT JOIN product_ p ON c.id = p.cid WHERE p.id = #{id}
     </select>
 </mapper>
